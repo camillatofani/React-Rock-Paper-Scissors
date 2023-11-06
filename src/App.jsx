@@ -4,8 +4,13 @@ import Title from './components/Title/Title'
 function App() {
 	const [playerOne, setPlayerOne] = useState(false)
 	const [playerTwo, setPlayerTwo] = useState(false)
+	const [playerOnePoints, setPlayerOnePoints] = useState(0)
+	const [playerTwoPoints, setPlayerTwoPoints] = useState(0)
+	const [playerOneWin, setPlayerOneWin] = useState(false)
+	const [playerTwoWin, setPlayerTwoWin] = useState(false)
 	const [inputNamePlayer, setInputNamePlayer] = useState('')
 	const [played, setPlayed] = useState([])
+	const [equals, setEquals] = useState(false)
 
 	// Logic for the player name
 	function setNamePlayer(e) {
@@ -33,22 +38,41 @@ function App() {
 		whoWin(verify)
 	}
 	function whoWin(verify) {
+		setEquals(false)
+		setPlayerOneWin(false)
+		setPlayerTwoWin(false)
 		if (verify.length === 2) {
-			couples.forEach(coup => {
-				if (verify[0] === coup[0]) {
-					if (verify[1] === coup[1]) {
-						console.log('you win')
-					}
-				}
-			})
-			console.log('verify', verify)
+			if (couples[0].some(pair => verify[0] === pair[0] && verify[1] === pair[1])) {
+				setPlayerOnePoints(playerOnePoints + 1)
+				setPlayerOneWin(true)
+			} else if (couples[1].some(pair => verify[0] === pair[0] && verify[1] === pair[1])) {
+				setPlayerTwoPoints(playerTwoPoints + 1)
+				setPlayerTwoWin(true)
+			} else if (couples[2].some(pair => verify[0] === pair[0] && verify[1] === pair[1])) {
+				setEquals(true)
+			}
 			setPlayed([])
+		} else {
+			console.log('Invalid verify array')
 		}
 	}
 
-	// 0 = equals, 1 = lose, 2 = win (playerOne)
 	const couples = [
-		['0', '2'],
+		[ // win
+			['0', '2'],
+			['1', '0'],
+			['2', '1']
+		],
+		[ // lose
+			['0', '1'],
+			['1', '2'],
+			['2', '0']
+		],
+		[ // null
+			['0', '0'],
+			['1', '1'],
+			['2', '2']
+		]
 	]
 
 	if (!playerOne || !playerTwo) {
@@ -72,10 +96,12 @@ function App() {
 				<div>
 					<div className='player'>player one</div>
 					<div className='playerName'>{ playerOne }</div>
+					<div className='point'>{ playerOnePoints }</div>
 				</div>
 				<div>
 					<div className='player'>player two</div>
 					<div className='playerName'>{ playerTwo }</div>
+					<div className='point'>{ playerTwoPoints }</div>
 				</div>
 			</div>
 			<div className='box-moves'>
@@ -83,9 +109,11 @@ function App() {
 				<div data-id="1" onClick={ getMoveId } className='move'>🤚🏻</div>
 				<div data-id="2" onClick={ getMoveId } className='move'>✌🏻</div>
 			</div>
-			{ couples.map((single, index) => (
-				<p key={ index }>one: { single.one }, two: { single.two }, win: { single.win }</p>
-			)) }
+			<div className='infoGame'>
+				{ playerOneWin && <div className='win'>{ playerOne } you made one point!</div>}
+				{ playerTwoWin && <div className='win'>{ playerTwo } you made one point!</div>}
+				{ equals && <div>Nobody win</div>}
+			</div>
 		</div>
 	)
 }

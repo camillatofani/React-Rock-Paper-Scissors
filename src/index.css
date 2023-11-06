@@ -4,6 +4,24 @@
 	padding: 0;
 	font-family: 'Poppins', sans-serif;
 }
+button {
+	padding: 8px 16px;
+	border: none;
+	border-radius: 5px;
+	background-color: #ececec;
+	cursor: pointer;
+}
+input {
+	padding: 8px 16px;
+	border: none;
+	border-radius: 5px;
+	border: solid 1px #222222;
+	cursor: pointer;
+	margin-top: 10px;
+}
+input:focus{
+    outline: none;
+}
 .game {
 	width: 100%;
 	max-width: 900px;
@@ -29,6 +47,9 @@
 	font-size: 22px;
 	font-weight: 700;
 }
+.point {
+	font-size: 40px;
+}
 .box-moves {
 	margin-top: 20px;
 	display: grid;
@@ -45,4 +66,11 @@
 }
 .move:hover {
 	opacity: 0.6;
+}
+.infoGame {
+	font-weight: 600;
+	padding-top: 20px;
+}
+.infoGame .win {
+	color: green;
 }
